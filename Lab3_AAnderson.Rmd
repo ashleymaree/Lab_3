@@ -1,0 +1,42 @@
+---
+title: "Data Science Lab_3"
+subtitle: "GitHub Link: https://github.com/ashleymaree/Lab_3.git"
+author: "Ashley Anderson"
+date: "11/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+**Question 1: Write a function that does one play of the Monty Hall simulation. Have an argument ‘switch’ which tells if the contestant uses the strategy of switching the door (switch = TRUE) or nor (switch = FALSE).**
+```{r}
+set.seed(17) ## set seed so code is reproducible
+
+switch_fxn <- function(switch = TRUE) { ## initiate a function for one play of the Monty Hall Simulation
+  x <- c(1, 2, 3) ## create a vector of 3 numbers to represent each door
+  doors <- sample(x, 2, replace = TRUE) ## create a vector of 2 numbers: the first being the door the contestant picks and the second being the door the prize is under
+  if (doors[1] == doors[2]) { ## if the contestant pick is the same as the prize...
+    sample(x[doors!=doors[1]], 1) ## select a door in the vector of door numbers that is not equal to the contestant's pick
+  } else { ## OR
+    new_pick <- setdiff(x, doors) ## select the door that is not in the vector of total door numbers and the vector of the contestant's pick and the prize door
+  ifelse(switch == TRUE, new_pick, doors[1]) ## when switch = TRUE, the door number not included in the the vector of the contestant's pick and the prize door is selected and 
+  if (doors[1] == doors[2]) { ## return a logical statement if the game was won (TRUE) or lost (FALSE)
+  print("TRUE")
+} else {
+  print("FALSE")
+  }}}
+```
+
+**Question 2: Next write a function that performs the simulation multiple times. Have an argument for the number of times to run the simulation (n) and the strategy (switch). Check out the replicate() function which may be useful.**
+```{r, eval=FALSE}
+simulate_fxn <- function(n, switch) { ## initiate function to simulate switch function
+  num_wins <- replicate(n, switch_fxn(switch = TRUE)) ## summarize the number of times the game is played when you switch your choice
+  print(mean(num_wins)) ## print the average of times the game is won
+}
+
+simulate_fxn(1000, switch=TRUE) ## should theoretically get ~66% 
+```
+
